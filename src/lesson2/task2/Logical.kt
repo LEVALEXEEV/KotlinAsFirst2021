@@ -1,7 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 
 package lesson2.task2
-
 import lesson1.task1.sqr
 
 /**
@@ -65,5 +64,6 @@ fun circleInside(
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
     if (kotlin.math.min(kotlin.math.min(a,b),c) <= kotlin.math.min(r,s) &&
-    a + b + c - kotlin.math.min(kotlin.math.min(a,b),c) - kotlin.math.max(kotlin.math.max(a,b),c) <= kotlin.math.max(r,s)) true
+        (a + b + c - kotlin.math.min(kotlin.math.min(a,b),c) - kotlin.math.max(kotlin.math.max(a,b),c))
+        <= kotlin.math.max(r,s)) true
     else false
