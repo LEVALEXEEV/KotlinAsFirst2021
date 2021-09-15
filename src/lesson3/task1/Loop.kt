@@ -2,7 +2,9 @@
 
 package lesson3.task1
 
+import kotlinx.html.I
 import kotlin.math.sqrt
+import lesson1.task1.sqr
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -192,7 +194,27 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var num: Int
+    var numCounter = 0
+    var number = 0
+    var clone: Int
+    for (i in 1..n){
+        number = sqr(i)
+        clone = number
+        num = 0
+        while (clone > 0){
+            clone /= 10
+            num += 1
+        }
+        numCounter += num
+        if (n <= numCounter) {
+            for (j in 1..numCounter - n) number /= 10
+            break
+        } else continue
+    }
+    return (number % 10)
+}
 
 /**
  * Сложная (5 баллов)
@@ -203,4 +225,29 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var num: Int
+    var last = 0
+    var preLast = 1
+    var numCounter = 0
+    var number = 0
+    var clone: Int
+    if (n == 1) return (1)
+    for (i in 1..n) {
+        number = last + preLast
+        clone = number
+        num = 0
+        while (clone > 0){
+            clone /= 10
+            num += 1
+        }
+        numCounter += num
+        preLast = last
+        last = number
+        if (n <= numCounter) {
+            for (j in 1..numCounter - n) number /= 10
+            break
+        } else continue
+    }
+    return (number % 10)
+}
