@@ -214,7 +214,7 @@ fun squareSequenceDigit(n: Int): Int {
             break
         } else continue
     }
-    return (number % 10)
+    return number % 10
 }
 
 
@@ -232,7 +232,7 @@ fun fibSequenceDigit(n: Int): Int {
     var preLast = 1
     var numCounter = 0
     var number = 0
-    if (n == 1) return (1)
+    if (n == 1) return 1
     for (i in 1..n) {
         number = last + preLast
         preLast = last
