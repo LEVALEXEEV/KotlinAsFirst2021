@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.isPrime
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -177,7 +178,21 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    var num = n
+    var i = 1
+    val result = mutableListOf<Int>()
+    if (isPrime(num)) return listOf(num)
+    while (num != 1) {
+        i++
+        if (num % i == 0 && isPrime(i)) {
+            result.add(i)
+            num /= i
+            i--
+        }
+    }
+    return result
+}
 
 /**
  * Сложная (4 балла)
@@ -186,7 +201,8 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
+
 
 /**
  * Средняя (3 балла)
@@ -217,7 +233,15 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var result = 0
+    var baseClone = 1
+    for (i in digits.size - 1 downTo 0) {
+        result += digits[i] * baseClone
+        baseClone *= base
+    }
+    return result
+}
 
 /**
  * Сложная (4 балла)
@@ -231,7 +255,14 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    val number = mutableListOf<Int>()
+    for (i in 0 until str.length) number.add(
+        i,
+        if (str[i] in "abcdefghijklmnopqrstuvwxyz") str[i] - 'a' + 10 else str[i] - '0'
+    )
+    return decimal(number, base)
+}
 
 /**
  * Сложная (5 баллов)
