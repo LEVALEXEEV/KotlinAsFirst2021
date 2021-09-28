@@ -5,6 +5,7 @@ package lesson3.task1
 import kotlinx.html.I
 import kotlin.math.sqrt
 import lesson1.task1.sqr
+import kotlin.math.abs
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -75,7 +76,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(number: Int): Int {
-    var clone = number
+    var clone = abs(number)
     var num = 0
     if (number == 0) return 1
     while (clone > 0) {

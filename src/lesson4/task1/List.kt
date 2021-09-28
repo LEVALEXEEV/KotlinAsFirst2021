@@ -236,7 +236,7 @@ fun convertToString(n: Int, base: Int): String = TODO()
 fun decimal(digits: List<Int>, base: Int): Int {
     var result = 0
     var baseClone = 1
-    for (i in digits.size - 1 downTo 0) {
+    for (i in digits.lastIndex downTo 0) {
         result += digits[i] * baseClone
         baseClone *= base
     }
@@ -258,7 +258,6 @@ fun decimal(digits: List<Int>, base: Int): Int {
 fun decimalFromString(str: String, base: Int): Int {
     val number = mutableListOf<Int>()
     for (i in 0 until str.length) number.add(
-        i,
         if (str[i] in "abcdefghijklmnopqrstuvwxyz") str[i] - 'a' + 10 else str[i] - '0'
     )
     return decimal(number, base)
