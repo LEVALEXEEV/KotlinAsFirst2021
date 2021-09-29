@@ -258,7 +258,7 @@ fun decimal(digits: List<Int>, base: Int): Int {
 fun decimalFromString(str: String, base: Int): Int {
     val number = mutableListOf<Int>()
     for (i in 0 until str.length) number.add(
-        if (str[i] in "abcdefghijklmnopqrstuvwxyz") str[i] - 'a' + 10 else str[i] - '0'
+        if (str[i] >= 'a') str[i] - 'a' + 10 else str[i] - '0'
     )
     return decimal(number, base)
 }
@@ -280,4 +280,49 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String = (triades(n / 1000, true) + triades(n % 1000, false)).joinToString(separator = " ")
+
+fun triades(n: Int, part: Boolean): List<String> {
+
+    val from11to19 = listOf<String>(
+        "одиннадцать", "двенадцать", "тринадцать",
+        "четырнадцать", "пятнадцать", "шестнадцать",
+        "семнадцать", "восемнадцать", "девятнадцать"
+    )
+    val from10to90 = listOf<String>(
+        "десять", "двадцать", "тридцать",
+        "сорок", "пятьдесят", "шестьдесят",
+        "семьдесят", "восемьдесят", "девяносто"
+    )
+    val from1to9 = listOf<String>(
+        "один", "два", "три",
+        "четыре", "пять", "шесть",
+        "семь", "восемь", "девять"
+    )
+    val hundreds = listOf(
+        "сто", "двести", "триста",
+        "четыреста", "пятьсот", "шестьсот",
+        "семьсот", "восемьсот", "девятьсот"
+    )
+    val text = mutableListOf<String>()
+    if (n == 0) return text
+    if (n / 100 in 1..9) {
+        text.add(hundreds[n / 100 - 1])
+    }
+    if (n % 100 in 11..19) {
+        text.add(from11to19[n % 100 - 11])
+        if (part) text.add("тысяч")
+    } else {
+        if (n % 100 / 10 in 1..9) text.add(from10to90[n % 100 / 10 - 1])
+        if (!part && n % 10 in 1..9) text.add(from1to9[n % 10 - 1])
+        else if (part && n % 10 != 0) when (n % 10) {
+            1 -> text.add("одна тысяча")
+            2 -> text.add("две тысячи")
+            3 -> text.add("три тысячи")
+            4 -> text.add("четыре тысячи")
+            else -> text.add("${from11to19[n % 10 - 1]} тысяч")
+        }
+        if (part && n % 10 == 0) text.add("тысяч")
+    }
+    return text
+}
