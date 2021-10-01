@@ -320,7 +320,7 @@ fun triades(n: Int, part: Boolean): List<String> {
             2 -> text.add("две тысячи")
             3 -> text.add("три тысячи")
             4 -> text.add("четыре тысячи")
-            else -> text.add("${from11to19[n % 10 - 1]} тысяч")
+            else -> text.add("${from1to9[n % 10 - 1]} тысяч")
         }
         if (part && n % 10 == 0) text.add("тысяч")
     }
