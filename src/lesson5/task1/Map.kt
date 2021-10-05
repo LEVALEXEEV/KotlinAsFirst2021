@@ -185,7 +185,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String = TODO()
 
 /**
  * Средняя (3 балла)
@@ -212,9 +212,15 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val res = mutableMapOf<String, Int>()
-    for (element in list) list.count()
+    for (element in list) {
+        var c = 0
+        if (element in res) continue
+        for (i in list.indices) if (element == list[i]) c++
+        if (c > 1) res[element] = c
+    }
     return res
 }
+
 
 /**
  * Средняя (3 балла)
