@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import kotlin.math.*
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -208,7 +210,11 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val res = mutableMapOf<String, Int>()
+    for (element in list) list.count()
+    return res
+}
 
 /**
  * Средняя (3 балла)
@@ -277,7 +283,14 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    for (i in list.indices) {
+        for (j in list.indices) {
+            if (list[i] + list[j] == number && i != j) return Pair(min(i, j), max(i, j))
+        }
+    }
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная (8 баллов)

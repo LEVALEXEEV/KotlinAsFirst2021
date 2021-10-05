@@ -280,7 +280,8 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = (triades(n / 1000, true) + triades(n % 1000, false)).joinToString(separator = " ")
+fun russian(n: Int): String =
+    (triades(n / 1000, true) + triades(n % 1000, false)).joinToString(separator = " ")
 
 fun triades(n: Int, part: Boolean): List<String> {
 
