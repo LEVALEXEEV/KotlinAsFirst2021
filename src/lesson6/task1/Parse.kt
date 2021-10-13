@@ -213,4 +213,34 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    var konv = mutableListOf<Int>()
+    var clone = cells
+    while (clone > 0) {
+        konv.add(clone % 10)
+        clone /= 10
+    }
+    konv.reverse()
+    var c1 = 0
+    var c2 = 0
+    var com = mutableListOf<Char>()
+    for (element in commands) {
+        if (element !in "><+-[]") throw IllegalArgumentException()
+        else {
+            if (element == '[') c1++
+            if (element == ']') c2++
+            com.add(element)
+        }
+    }
+    var dat = konv.size / 2
+    if (c1 != c2) throw IllegalArgumentException()
+    for (k in com) {
+        when (k) {
+            '+' -> konv[dat]++
+            '-' -> konv[dat]--
+            '>' -> dat++
+            '<' -> dat--
+            '[' ->
+        }
+    }
+}
