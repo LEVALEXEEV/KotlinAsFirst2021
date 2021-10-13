@@ -214,33 +214,53 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    var konv = mutableListOf<Int>()
-    var clone = cells
-    while (clone > 0) {
-        konv.add(clone % 10)
-        clone /= 10
-    }
-    konv.reverse()
+    val konv = mutableListOf<Int>()
+    for (i in 0 until cells) konv.add(0)
     var c1 = 0
     var c2 = 0
-    var com = mutableListOf<Char>()
+    val com = mutableListOf<Char>()
     for (element in commands) {
-        if (element !in "><+-[]") throw IllegalArgumentException()
+        if (element !in "><+-[] ") throw IllegalArgumentException()
         else {
             if (element == '[') c1++
             if (element == ']') c2++
             com.add(element)
+            if (c2 > 0 && c1 == 0) throw IllegalArgumentException()
         }
     }
-    var dat = konv.size / 2
+    var dat = cells / 2
     if (c1 != c2) throw IllegalArgumentException()
-    for (k in com) {
-        when (k) {
+    var cnum = 0
+    for (i in 1..limit) {
+        when (com[cnum]) {
             '+' -> konv[dat]++
             '-' -> konv[dat]--
             '>' -> dat++
             '<' -> dat--
-            '[' ->
+            '[' -> if (konv[dat] == 0) {
+                var k = 0
+                while (cnum < com.size) {
+                    cnum++
+                    if (com[cnum] == '[') k++
+                    else if (com[cnum] == ']')
+                        if (k == 0) break
+                        else k--
+                }
+            }
+            ']' -> if (konv[dat] != 0) {
+                var k = 0
+                while (cnum > 0) {
+                    cnum--
+                    if (com[cnum] == ']') k++
+                    else if (com[cnum] == '[')
+                        if (k == 0) break
+                        else k--
+                }
+            }
         }
+        if (dat !in 0 until cells) throw IllegalStateException()
+        if (cnum == com.lastIndex) break
+        else cnum++
     }
+    return konv
 }
