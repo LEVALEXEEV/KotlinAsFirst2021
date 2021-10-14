@@ -185,7 +185,7 @@ fun factorize(n: Int): List<Int> {
     if (isPrime(num)) return listOf(num)
     while (num != 1) {
         i++
-        if (num % i == 0 && isPrime(i)) {
+        if (num % i == 0) {
             result.add(i)
             num /= i
             i--
