@@ -169,7 +169,7 @@ fun mostExpensive(description: String): String {
     for (i in parts) {
         val boof = i.split(' ')
         if (boof.size != 2 || boof[boof.lastIndex].toDoubleOrNull() == null) return ""
-        if (boof[boof.lastIndex].toDouble() > max) {
+        if (boof[boof.lastIndex].toDouble() >= max) {
             max = boof[boof.lastIndex].toDouble()
             res = boof[0]
         }
@@ -227,8 +227,7 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    val konv = mutableListOf<Int>()
-    for (i in 0 until cells) konv.add(0)
+    val konv = MutableList(cells) { 0 }
     var c1 = 0
     var c2 = 0
     val com = mutableListOf<Char>()
