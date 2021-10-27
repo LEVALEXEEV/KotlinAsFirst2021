@@ -448,7 +448,50 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
  */
+fun nC(ch: Int): Int {
+    var c = 0
+    var clone = ch
+    if (ch == 0) return 1
+    while (clone > 0) {
+        c++
+        clone /= 10
+    }
+    if (ch < 0) c++
+    return c
+}
+
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var ost = lhv
+    writer.write(" $lhv | $rhv")
+    writer.newLine()
+    while (ost / 10 >= rhv) ost /= 10
+    writer.write("-${ost / rhv * rhv}${" ".repeat(nC(lhv) - nC(ost) + 3)}${lhv / rhv}")
+    writer.newLine()
+    writer.write("-".repeat(nC(ost) + 1))
+    writer.newLine()
+    var position = nC(ost)
+    ost = (ost - ost / rhv * rhv)
+    while (position + 1 <= nC(lhv)) {
+        var string = ost.toString()
+        string += lhv.toString()[position]
+        writer.write(" ".repeat(position + 2 - string.length))
+        writer.write(string)
+        writer.newLine()
+        writer.write(" ".repeat(position + 1 - string.length))
+        if (string.length > nC(string.toInt() / rhv * rhv)) writer.write(" ")
+        writer.write("-${string.toInt() / rhv * rhv}")
+        writer.newLine()
+        writer.write(" ".repeat(position + 1 - string.length))
+        if (string.length > nC(string.toInt() / rhv * rhv)) writer.write(" ")
+        else writer.write("-")
+        writer.write("-".repeat(string.length))
+        writer.newLine()
+        position++
+        ost = string.toInt() - string.toInt() / rhv * rhv
+    }
+    writer.write(" ".repeat(position + 1 - nC(ost)))
+    writer.write("$ost")
+    writer.close()
 }
 
