@@ -1,7 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
 
 package lesson7.task1
-
+import kotlin.math.*
 import java.io.File
 
 // Урок 7: работа с файлами
@@ -462,9 +462,11 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
  */
+
+
 fun nC(ch: Int): Int {
     var c = 0
-    var clone = ch
+    var clone = abs(ch)
     if (ch == 0) return 1
     while (clone > 0) {
         c++
@@ -494,23 +496,19 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     while (position + 1 <= nC(lhv)) {
         var string = ost.toString()
         string += lhv.toString()[position]
-        if (n == 1) writer.write(" ")
-        writer.write(" ".repeat(position + 1 - string.length))
+        writer.write(" ".repeat(position + 1 + n - string.length))
         writer.write(string)
         writer.newLine()
-        if (n == 1) writer.write(" ")
-        writer.write(" ".repeat(position - nC(string.toInt() / rhv * rhv)))
+        writer.write(" ".repeat(position + n - nC(string.toInt() / rhv * rhv)))
         writer.write("-${string.toInt() / rhv * rhv}")
         writer.newLine()
-        if (n == 1) writer.write(" ")
-        writer.write(" ".repeat(position + 1 - maxOf(nC(string.toInt() / rhv * rhv) + 1, string.length)))
+        writer.write(" ".repeat(position + 1 + n - maxOf(nC(string.toInt() / rhv * rhv) + 1, string.length)))
         writer.write("-".repeat(maxOf(nC(string.toInt() / rhv * rhv) + 1, string.length)))
         writer.newLine()
         position++
         ost = string.toInt() - string.toInt() / rhv * rhv
     }
-    if (n == 1) writer.write(" ")
-    writer.write(" ".repeat(position - nC(ost)))
+    writer.write(" ".repeat(position + n - nC(ost)))
     writer.write("$ost")
     writer.close()
 }
