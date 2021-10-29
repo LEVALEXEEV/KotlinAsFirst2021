@@ -477,14 +477,16 @@ fun nC(ch: Int): Int {
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var ost = lhv
-    if (rhv < lhv || nC(lhv) == 1) writer.write(" ")
+    var n = 0
+    while (ost / 10 >= rhv) ost /= 10
+    if (nC(lhv) == 1 || nC(ost) == nC(ost / rhv * rhv)) n = 1
+    if (n == 1) writer.write(" ")
     writer.write("$lhv | $rhv")
     writer.newLine()
-    while (ost / 10 >= rhv) ost /= 10
     if (ost == lhv && nC(ost) >= 2) writer.write(" ".repeat(nC(lhv) - 2))
     writer.write("-${ost / rhv * rhv}${" ".repeat(nC(lhv) - nC(ost) + 3)}${lhv / rhv}")
     writer.newLine()
-    if (rhv < lhv || nC(lhv) == 1) writer.write("-")
+    if (n == 1) writer.write("-")
     writer.write("-".repeat(nC(ost)))
     writer.newLine()
     var position = nC(ost)
@@ -492,21 +494,22 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     while (position + 1 <= nC(lhv)) {
         var string = ost.toString()
         string += lhv.toString()[position]
-        writer.write(" ".repeat(position + 2 - string.length))
+        if (n == 1) writer.write(" ")
+        writer.write(" ".repeat(position + 1 - string.length))
         writer.write(string)
         writer.newLine()
-        writer.write(" ".repeat(position + 1 - nC(string.toInt() / rhv * rhv)))
+        if (n == 1) writer.write(" ")
+        writer.write(" ".repeat(position - nC(string.toInt() / rhv * rhv)))
         writer.write("-${string.toInt() / rhv * rhv}")
         writer.newLine()
-        writer.write(" ".repeat(position + 1 - string.length))
-        if (string.length > nC(string.toInt() / rhv * rhv)) writer.write(" ")
-        else writer.write("-")
-        writer.write("-".repeat(string.length))
+        if (n == 1) writer.write(" ")
+        writer.write(" ".repeat(position + 1 - maxOf(nC(string.toInt() / rhv * rhv) + 1, string.length)))
+        writer.write("-".repeat(maxOf(nC(string.toInt() / rhv * rhv) + 1, string.length)))
         writer.newLine()
         position++
         ost = string.toInt() - string.toInt() / rhv * rhv
     }
-    if (rhv < lhv || nC(lhv) == 1) writer.write(" ")
+    if (n == 1) writer.write(" ")
     writer.write(" ".repeat(position - nC(ost)))
     writer.write("$ost")
     writer.close()
