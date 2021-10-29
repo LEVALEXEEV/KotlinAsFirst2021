@@ -485,7 +485,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     if (n == 1) writer.write(" ")
     writer.write("$lhv | $rhv")
     writer.newLine()
-    if (ost == lhv && nC(ost) >= 2) writer.write(" ".repeat(nC(lhv) - 2))
+    if (ost / rhv * rhv == 0) writer.write(" ".repeat(nC(lhv) - 2 + n))
     writer.write("-${ost / rhv * rhv}${" ".repeat(nC(lhv) - nC(ost) + 3)}${lhv / rhv}")
     writer.newLine()
     if (n == 1) writer.write("-")
