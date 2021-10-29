@@ -477,12 +477,15 @@ fun nC(ch: Int): Int {
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var ost = lhv
-    writer.write(" $lhv | $rhv")
+    if (rhv < lhv || nC(lhv) == 1) writer.write(" ")
+    writer.write("$lhv | $rhv")
     writer.newLine()
     while (ost / 10 >= rhv) ost /= 10
+    if (ost == lhv && nC(ost) >= 2) writer.write(" ".repeat(nC(lhv) - 2))
     writer.write("-${ost / rhv * rhv}${" ".repeat(nC(lhv) - nC(ost) + 3)}${lhv / rhv}")
     writer.newLine()
-    writer.write("-".repeat(nC(ost) + 1))
+    if (rhv < lhv || nC(lhv) == 1) writer.write("-")
+    writer.write("-".repeat(nC(ost)))
     writer.newLine()
     var position = nC(ost)
     ost = (ost - ost / rhv * rhv)
@@ -503,7 +506,8 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         position++
         ost = string.toInt() - string.toInt() / rhv * rhv
     }
-    writer.write(" ".repeat(position + 1 - nC(ost)))
+    if (rhv < lhv || nC(lhv) == 1) writer.write(" ")
+    writer.write(" ".repeat(position - nC(ost)))
     writer.write("$ost")
     writer.close()
 }
