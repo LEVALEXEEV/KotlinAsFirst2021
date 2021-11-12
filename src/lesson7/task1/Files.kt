@@ -99,8 +99,7 @@ fun sibilants(inputName: String, outputName: String) {
         var line1 = line
         for (a in "ЖЧШЩжчшщ") {
             for (b in f.indices) {
-                while (line1.contains(a + f[b]))
-                    line1 = line1.replace(a + f[b], a + t[b])
+                line1 = line1.replace(a + f[b], a + t[b])
             }
         }
         writer.write(line1)
@@ -464,7 +463,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  */
 
 
-fun nC(ch: Int): Int {
+fun nC(ch: Int): Int { //nC - numCounter, часто используется в коде, поэтому сократил
     var c = 0
     var clone = abs(ch)
     if (ch == 0) return 1
@@ -478,38 +477,38 @@ fun nC(ch: Int): Int {
 
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    var ost = lhv
-    var n = 0
-    while (ost / 10 >= rhv) ost /= 10
-    if (nC(lhv) == 1 || nC(ost) == nC(ost / rhv * rhv)) n = 1
-    if (n == 1) writer.write(" ")
+    var remainder = lhv
+    var firstSpace = 0
+    while (remainder / 10 >= rhv) remainder /= 10
+    if (nC(lhv) == 1 || nC(remainder) == nC(remainder / rhv * rhv)) firstSpace = 1
+    if (firstSpace == 1) writer.write(" ")
     writer.write("$lhv | $rhv")
     writer.newLine()
-    if (ost / rhv * rhv == 0) writer.write(" ".repeat(nC(lhv) - 2 + n))
-    writer.write("-${ost / rhv * rhv}${" ".repeat(nC(lhv) - nC(ost) + 3)}${lhv / rhv}")
+    if (remainder / rhv * rhv == 0) writer.write(" ".repeat(nC(lhv) - 2 + firstSpace))
+    writer.write("-${remainder / rhv * rhv}${" ".repeat(nC(lhv) - nC(remainder) + 3)}${lhv / rhv}")
     writer.newLine()
-    if (n == 1) writer.write("-")
-    writer.write("-".repeat(nC(ost)))
+    if (firstSpace == 1) writer.write("-")
+    writer.write("-".repeat(nC(remainder)))
     writer.newLine()
-    var position = nC(ost)
-    ost = (ost - ost / rhv * rhv)
+    var position = nC(remainder)
+    remainder = (remainder - remainder / rhv * rhv)
     while (position + 1 <= nC(lhv)) {
-        var string = ost.toString()
+        var string = remainder.toString()
         string += lhv.toString()[position]
-        writer.write(" ".repeat(position + 1 + n - string.length))
+        writer.write(" ".repeat(position + 1 + firstSpace - string.length))
         writer.write(string)
         writer.newLine()
-        writer.write(" ".repeat(position + n - nC(string.toInt() / rhv * rhv)))
+        writer.write(" ".repeat(position + firstSpace - nC(string.toInt() / rhv * rhv)))
         writer.write("-${string.toInt() / rhv * rhv}")
         writer.newLine()
-        writer.write(" ".repeat(position + 1 + n - maxOf(nC(string.toInt() / rhv * rhv) + 1, string.length)))
+        writer.write(" ".repeat(position + 1 + firstSpace - maxOf(nC(string.toInt() / rhv * rhv) + 1, string.length)))
         writer.write("-".repeat(maxOf(nC(string.toInt() / rhv * rhv) + 1, string.length)))
         writer.newLine()
         position++
-        ost = string.toInt() - string.toInt() / rhv * rhv
+        remainder = string.toInt() - string.toInt() / rhv * rhv
     }
-    writer.write(" ".repeat(position + n - nC(ost)))
-    writer.write("$ost")
+    writer.write(" ".repeat(position + firstSpace - nC(remainder)))
+    writer.write("$remainder")
     writer.close()
 }
 
