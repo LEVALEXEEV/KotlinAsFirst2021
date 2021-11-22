@@ -276,3 +276,41 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     }
     return konv
 }
+
+fun longest(chipCoords: String): List<Int> { //тест на автомат
+    var max = 0
+    val boo = chipCoords.split(' ')
+    val res = mutableListOf<Int>()
+    val set = mutableSetOf<Int>()
+    for (i in boo.indices) {
+        if (boo[i].toInt() % 10 !in 1..8 || boo[i].toInt() / 10 !in 1..8 || boo[i].toInt() in set || boo[i].toInt() > 88)
+            throw IllegalArgumentException()
+        else set.add(boo[i].toInt())
+    }
+    if (boo.size >= 64) throw IllegalArgumentException()
+    for (x in 1..8) {
+        var cnt = 0
+        val list = mutableListOf<Int>()
+        for (y in 1..8) {
+            if (x * 10 + y in set) {
+                cnt++
+                list.add(x * 10 + y)
+            } else {
+                if (cnt > max) {
+                    max = cnt
+                    res.clear()
+                    for (i in list.indices) res.add(list[i])
+                    list.clear()
+                }
+                cnt = 0
+            }
+        }
+        if (cnt > max) {
+            max = cnt
+            res.clear()
+            for (i in list.indices) res.add(list[i])
+            list.clear()
+        }
+    }
+    return res
+}

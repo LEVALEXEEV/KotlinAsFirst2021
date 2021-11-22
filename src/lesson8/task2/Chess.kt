@@ -22,7 +22,7 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String = TODO()
+    fun notation(): String = if (inside()) "${'a' + column - 1}$row" else ""
 }
 
 /**
@@ -32,7 +32,12 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
-fun square(notation: String): Square = TODO()
+fun square(notation: String): Square {
+    val a = notation[0]
+    val b = notation[1]
+    if (notation.length != 2 || a !in "abcdefgh" || b !in "12345678") throw IllegalArgumentException()
+    return Square(a - 'a' + 1, b - '1' + 1)
+}
 
 /**
  * Простая (2 балла)
@@ -181,7 +186,7 @@ fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-fun knightMoveNumber(start: Square, end: Square): Int = TODO()
+fun knightMoveNumber(start: Square, end: Square): Int = knightTrajectory(start, end).size - 1
 
 /**
  * Очень сложная (10 баллов)
@@ -203,4 +208,34 @@ fun knightMoveNumber(start: Square, end: Square): Int = TODO()
  *
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun knightTrajectory(start: Square, end: Square): List<Square> = TODO()
+
+val Moves = listOf(
+    2 to 1, 1 to 2, 2 to -1, -2 to 1,
+    1 to -2, -1 to 2, -1 to -2, -2 to -1
+)
+
+fun knightTrajectory(start: Square, end: Square): List<Square> {
+    if (start == end) return listOf(start)
+    val set = mutableSetOf(start)
+    val potential = mutableListOf(start)
+    val prewMove = mutableMapOf(start to Square(0, 0))
+    while (potential.isNotEmpty()) {
+        if (potential.first() == end) break
+        for ((x, y) in Moves) {
+            val next = Square(potential.first().column + x, potential.first().row + y)
+            if (next.inside() && next !in set) {
+                potential.add(next)
+                prewMove[next] = potential.first()
+            }
+        }
+        set += potential.first()
+        potential.removeFirst()
+    }
+    val res = mutableListOf(end)
+    var position = end
+    while (position != start) {
+        res.add(0, prewMove[position]!!)
+        position = prewMove[position]!!
+    }
+    return res
+}
