@@ -149,17 +149,4 @@ class Tests {
         assertThrows(IllegalArgumentException::class.java) { computeDeviceCells(10, "===", 3) }
         assertThrows(IllegalArgumentException::class.java) { computeDeviceCells(10, "+>+>[+>", 3) }
         assertThrows(IllegalStateException::class.java) { computeDeviceCells(20, ">>>>>>>>>>>>>", 12) }
-    }
-
-    @Test
-    fun longest() {
-        assertEquals(listOf(42, 43, 44), longest("42 44 57 67 77 53 33 23 43 78"))
-        assertEquals(listOf(42), longest("42"))
-        assertEquals(listOf(85, 86, 87, 88), longest("88 87 86 85"))
-        assertEquals(listOf(46, 47, 48), longest("46 48 47 85"))
-        assertEquals(listOf(42, 43), longest("88 42 43 87"))
-        assertThrows(IllegalArgumentException::class.java) { longest("92") }
-        assertThrows(IllegalArgumentException::class.java) { longest("sfs") }
-        assertThrows(IllegalArgumentException::class.java) { longest("42 42") }
-    }
-}
+    }}

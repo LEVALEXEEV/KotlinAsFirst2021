@@ -33,9 +33,11 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
+    val set = setOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', '1', '2', '3', '4', '5', '6', '7', '8')
+    if (notation.length != 2 || notation[0] !in set || notation[1] !in set)
+        throw IllegalArgumentException()
     val a = notation[0]
     val b = notation[1]
-    if (notation.length != 2 || a !in "abcdefgh" || b !in "12345678") throw IllegalArgumentException()
     return Square(a - 'a' + 1, b - '1' + 1)
 }
 
@@ -186,7 +188,10 @@ fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-fun knightMoveNumber(start: Square, end: Square): Int = knightTrajectory(start, end).size - 1
+fun knightMoveNumber(start: Square, end: Square): Int {
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
+    return knightTrajectory(start, end).size - 1
+}
 
 /**
  * Очень сложная (10 баллов)
