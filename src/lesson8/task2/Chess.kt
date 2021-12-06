@@ -32,9 +32,10 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
+
+
 fun square(notation: String): Square {
-    val set = setOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', '1', '2', '3', '4', '5', '6', '7', '8')
-    if (notation.length != 2 || notation[0] !in set || notation[1] !in set)
+    if (notation.length != 2 || notation[0] < 'a' || notation[0] > 'h' || notation[1] < '1' || notation[1] > '8')
         throw IllegalArgumentException()
     val a = notation[0]
     val b = notation[1]
