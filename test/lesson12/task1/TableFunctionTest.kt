@@ -78,6 +78,6 @@ internal class TableFunctionTest {
         val f2 = TableFunction()
         f2.add(3.0, 4.0)
         f2.add(1.0, 2.0)
-        assertEquals(f1, f2)
+        assertEquals(true, f1.equals(f2))
     }
 }
