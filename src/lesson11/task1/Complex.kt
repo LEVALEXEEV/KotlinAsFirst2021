@@ -13,7 +13,7 @@ fun Complex(s: String): Complex {
         val parts = s.split("-")
         (Complex(parts[0].toDouble(), parts[1].removeSuffix("i").toDouble() * -1.0))
     }
-}
+}//проверить правильность данных
 
 /**
  * Класс "комплексное число".
@@ -58,10 +58,14 @@ class Complex(val re: Double, val im: Double) {
     /**
      * Деление
      */
-    operator fun div(other: Complex): Complex = Complex(
-        (re * other.re + im * other.im) / (other.re * other.re + other.im * other.im),
-        (im * other.re - re * other.im) / (other.re * other.re + other.im * other.im)
-    )
+    operator fun div(other: Complex): Complex {
+        if ((other.re * other.re + other.im * other.im) != 0.0) {
+            return Complex(
+                (re * other.re + im * other.im) / (other.re * other.re + other.im * other.im),
+                (im * other.re - re * other.im) / (other.re * other.re + other.im * other.im)
+            )
+        } else throw IllegalStateException()
+    }
 
     /**
      * Сравнение на равенство
@@ -75,7 +79,11 @@ class Complex(val re: Double, val im: Double) {
     /**
      * Преобразование в строку
      */
-    override fun toString(): String = "$re${im}i"
+    override fun toString(): String {
+        val reMinus = if (re > 0) "+" else "-"
+        val imMinus = if (im > 0) "+" else "-"
+        return "$reMinus$re$imMinus${im}i"//знак
+    }
 
     override fun hashCode(): Int {
         var result = re.hashCode()

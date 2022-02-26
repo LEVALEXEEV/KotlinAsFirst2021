@@ -2,7 +2,7 @@
 
 package lesson12.task1
 
-import javax.print.attribute.standard.MediaSize
+
 import kotlin.math.abs
 
 /**
@@ -18,7 +18,7 @@ import kotlin.math.abs
  */
 class TableFunction {
 
-    var map = mapOf<Double, Double>()
+    var map = mutableMapOf<Double, Double>()
 
     /**
      * Количество пар в таблице
@@ -42,7 +42,7 @@ class TableFunction {
      * Вернуть true, если пара была удалена.
      */
     fun remove(x: Double): Boolean {
-        return if (map.isEmpty() || x !in map) false
+        return if (x !in map) false
         else {
             map -= x
             true
@@ -53,7 +53,7 @@ class TableFunction {
      * Вернуть коллекцию из всех пар в таблице
      */
     fun getPairs(): Collection<Pair<Double, Double>> {
-        var collection = listOf<Pair<Double, Double>>()
+        val collection = mutableListOf<Pair<Double, Double>>()
         for ((x, y) in map) {
             collection += Pair(x, y)
         }
@@ -68,12 +68,12 @@ class TableFunction {
     fun findPair(x: Double): Pair<Double, Double>? {
         if (map.isEmpty()) throw IllegalStateException()
         if (x in map) return Pair(x, map.getOrDefault(x, 0.0))
-        var mindif = x - map.keys.first()
+        var minDif = x - map.keys.first()
         for ((key) in map) {
             val dif = key - x
-            if ((abs(dif) == abs(mindif) && dif > mindif) || (abs(dif) <= abs(mindif))) mindif = dif
-        }
-        return Pair(x + mindif, map.getOrDefault(x + mindif, 0.0))
+            if ((abs(dif) == abs(minDif) && dif > minDif) || (abs(dif) <= abs(minDif))) minDif = dif
+        } //дополнить
+        return Pair(x + minDif, map.getOrDefault(x + minDif, 0.0))
     }
 
     /**
@@ -84,6 +84,12 @@ class TableFunction {
      * Если существуют две пары, такие, что x1 < x < x2, использовать интерполяцию.
      * Если их нет, но существуют две пары, такие, что x1 < x2 < x или x > x2 > x1, использовать экстраполяцию.
      */
+    private fun extrapolation(x: Double, x1: Double, x2: Double): Double {
+        val y1 = map.getOrDefault(x1, 0.0)
+        val y2 = map.getOrDefault(x2, 0.0)
+        return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
+    }
+
     fun getValue(x: Double): Double {
         if (x in map) return map.getOrDefault(x, 0.0)
         if (map.size == 1) return map.getOrDefault(map.keys.first(), 0.0)
@@ -92,22 +98,18 @@ class TableFunction {
         if (x < map.keys.first()) {
             val x1 = map.keys.elementAt(0)
             val x2 = map.keys.elementAt(1)
-            val y1 = map.getOrDefault(map.keys.elementAt(0), 0.0)
-            val y2 = map.getOrDefault(map.keys.elementAt(1), 0.0)
-            return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
+            return extrapolation(x, x1, x2)
         } else if (x > map.keys.last()) {
             val x1 = map.keys.last()
             val x2 = map.keys.elementAt(map.size - 1)
-            val y1 = map.getOrDefault(map.keys.last(), 0.0)
-            val y2 = map.getOrDefault(map.keys.elementAt(map.size - 1), 0.0)
-            return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
+            return extrapolation(x, x1, x2)
         } else {
             for (i in map.keys.indices) {
                 if (x < map.keys.elementAt(i) && x > map.keys.elementAt(i - 1)) {
                     val x1 = map.keys.elementAt(i - 1)
                     val x2 = map.keys.elementAt(i)
-                    val y1 = map.getOrDefault(map.keys.elementAt(i - 1), 0.0)
-                    val y2 = map.getOrDefault(map.keys.elementAt(i), 0.0)
+                    val y1 = map.getOrDefault(x1, 0.0)
+                    val y2 = map.getOrDefault(x2, 0.0)
                     return y1 + (x - x1) / (x2 - x1) * (y2 - y1)
                 }
             }
@@ -122,7 +124,12 @@ class TableFunction {
     override fun equals(other: Any?): Boolean =
         if (other !is TableFunction) false
         else {
-            var tbl: TableFunction = other
             map == other.map
         }
+
+    override fun hashCode(): Int {
+        var result = map.hashCode()
+        result = 31 * result + size
+        return result
+    }
 }
