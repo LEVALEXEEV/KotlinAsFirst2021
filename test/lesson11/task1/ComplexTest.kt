@@ -1,5 +1,6 @@
 package lesson11.task1
 
+import lesson6.task1.computeDeviceCells
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -10,6 +11,15 @@ internal class ComplexTest {
     private fun assertApproxEquals(expected: Complex, actual: Complex, eps: Double) {
         assertEquals(expected.re, actual.re, eps)
         assertEquals(expected.im, actual.im, eps)
+    }
+
+    @Test
+    @Tag("2")
+    fun complex() {
+        assertApproxEquals(Complex("4-2i"), Complex(4.0, -2.0), 1e-10)
+        assertApproxEquals(Complex("4+2i"), Complex(4.0, 2.0), 1e-10)
+        assertThrows(IllegalStateException::class.java) { Complex("") }
+        assertThrows(IllegalStateException::class.java) { Complex("affairs") }
     }
 
     @Test

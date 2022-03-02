@@ -6,6 +6,7 @@ package lesson11.task1
  * Фабричный метод для создания комплексного числа из строки вида x+yi
  */
 fun Complex(s: String): Complex {
+    if (Regex("[0-9]+\\+|-[0-9]+i").find(s) == null) throw IllegalStateException()
     return if ("+" in s) {
         val parts = s.split("+")
         (Complex(parts[0].toDouble(), parts[1].removeSuffix("i").toDouble()))
@@ -13,7 +14,7 @@ fun Complex(s: String): Complex {
         val parts = s.split("-")
         (Complex(parts[0].toDouble(), parts[1].removeSuffix("i").toDouble() * -1.0))
     }
-}//проверить правильность данных
+}
 
 /**
  * Класс "комплексное число".
