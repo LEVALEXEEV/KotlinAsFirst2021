@@ -40,10 +40,7 @@ class Complex(val re: Double, val im: Double) {
     /**
      * Смена знака (у обеих частей числа)
      */
-    operator fun unaryMinus(): Complex = Complex(
-        re * -1.0,
-        im * -1.0
-    )
+    operator fun unaryMinus(): Complex = Complex(-re, -im)
 
     /**
      * Вычитание
@@ -81,9 +78,8 @@ class Complex(val re: Double, val im: Double) {
      * Преобразование в строку
      */
     override fun toString(): String {
-        val reMinus = if (re > 0) "+" else "-"
-        val imMinus = if (im > 0) "+" else "-"
-        return "$reMinus$re$imMinus${im}i"//знак
+        val imPlus = if (im > 0) "+" else ""
+        return "${re.toInt()}$imPlus${im.toInt()}i"
     }
 
     override fun hashCode(): Int {

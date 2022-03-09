@@ -50,12 +50,28 @@ internal class ComplexTest {
     @Tag("4")
     fun div() {
         assertApproxEquals(Complex("1+2i"), Complex("11+2i") / Complex("3-4i"), 1e-10)
+        assertThrows(IllegalStateException::class.java) { Complex("11+2i") / Complex("0-0i") }
     }
 
     @Test
     @Tag("2")
     fun equals() {
-        assertApproxEquals(Complex(1.0, 2.0), Complex("1+2i"), 1e-12)
-        assertApproxEquals(Complex(1.0, 0.0), Complex(1.0), 1e-12)
+        assertEquals(true, Complex("1+2i") == Complex(1.0, 2.0))
+        assertEquals(false, Complex("1+2i") == Complex(0.0, 2.0))
+    }
+
+    @Test
+    @Tag("2")
+    fun ToString() {
+        assertEquals("4-2i", Complex(4.0, -2.0).toString())
+        assertEquals("-4-2i", Complex(-4.0, -2.0).toString())
+        assertEquals("4+2i", Complex(4.0, 2.0).toString())
+        assertEquals("-4+2i", Complex(-4.0, 2.0).toString())
+    }
+
+    @Test
+    @Tag("2")
+    fun HashCode() {
+        assertEquals(Complex(4.0, 2.0).hashCode(), 4.0.hashCode() * 31 + 2.0.hashCode())
     }
 }
