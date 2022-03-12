@@ -57,12 +57,18 @@ class Complex(val re: Double, val im: Double) {
      * Деление
      */
     operator fun div(other: Complex): Complex {
-        if ((other.re * other.re + other.im * other.im) != 0.0) {
-            return Complex(
-                (re * other.re + im * other.im) / (other.re * other.re + other.im * other.im),
-                (im * other.re - re * other.im) / (other.re * other.re + other.im * other.im)
-            )
-        } else throw IllegalStateException()
+        val d = other.re * other.re + other.im * other.im
+        try {
+            if ((d) != 0.0) {
+                return Complex(
+                    (re * other.re + im * other.im) / d,
+                    (im * other.re - re * other.im) / d
+                )
+            } else throw IllegalStateException()
+        } catch (ex: Exception) {
+            println("Exception")
+        }
+        return Complex(0.0, 0.0)
     }
 
     /**
