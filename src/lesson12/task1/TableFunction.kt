@@ -68,11 +68,14 @@ class TableFunction {
     fun findPair(x: Double): Pair<Double, Double>? {
         if (map.isEmpty()) throw IllegalStateException()
         if (x in map) return Pair(x, map.getOrDefault(x, 0.0))
-        var minDif = x - map.keys.first()
+        var minDif = map.keys.first() - x
         for ((key) in map) {
             val dif = key - x
-            if ((abs(dif) == abs(minDif) && dif > minDif) || (abs(dif) <= abs(minDif))) minDif = dif
-        } //дополнить
+            if ((abs(dif) < abs(minDif)) || (abs(dif) == abs(minDif) && dif < 0)) minDif = dif
+        } //меняем minDif только в 2 случаях:
+        //1) если нашелся key, который ближе к исходному x
+        //2) если нашелся key, который находится на таком же расстоянии от исходного x, как и найденный до него,
+        //   и он стоит левее х на числовой прямой
         return Pair(x + minDif, map.getOrDefault(x + minDif, 0.0))
     }
 

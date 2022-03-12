@@ -44,10 +44,11 @@ internal class TableFunctionTest {
     fun findPair() {
         val function = TableFunction()
         function.add(1.0, 2.0)
-        function.add(3.0, 4.0)
         function.add(5.0, 6.0)
+        function.add(3.0, 4.0)
         assertEquals(5.0 to 6.0, function.findPair(5.75))
         assertEquals(1.0 to 2.0, function.findPair(1.5))
+        assertEquals(3.0 to 4.0, function.findPair(4.0))
     }
 
     @Test
